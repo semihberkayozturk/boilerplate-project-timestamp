@@ -26,12 +26,31 @@ app.get("/api/hello", function(req, res) {
 });
 
 
+let resObject = {}
 
-app.get("/api/timestamp/:date_string", (req, res) => {
-    let dateString = req.params.date_string;
-    console.log(dateString);
-    res.json({ "error": "Invalid Date" });
+app.get("/api/timestamp/:input", (req, res) => {
+    let input = req.params.input;
+    if (input.includes('-')) {
+        resObject["unix"] = new Date(input).getTime();
+        resObject["utc"] = new Date(input).toUTCString();
+    } else {
+        input = parseInt(input);
+        resObject["unix"] = new Date(input).getTime();
+        resObject["utc"] = new Date(input).toUTCString();
+    }
+
+    if (!resObject["unix"] || !resObject["utc"]) {
+        res.json({ error: "Invalid Date" });
+    }
+    res.json(resObject);
 });
+
+app.get("/api/timestamp"), (req, res) => {
+    resObject["unix"] = new Date().getTime();
+    resObject["utc"] = new Date().toUTCString();
+
+    res.json(resObject);
+};
 
 
 
