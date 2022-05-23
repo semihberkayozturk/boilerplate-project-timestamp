@@ -28,15 +28,22 @@ app.get("/api/hello", function(req, res) {
 
 let resObject = {}
 
-app.get("/api/timestamp/:input", (req, res) => {
-    let input = req.params.input;
-    if (input.includes('-')) {
-        resObject["unix"] = new Date(input).getTime();
-        resObject["utc"] = new Date(input).toUTCString();
+app.get("/api/timestamp", (req, res) => {
+    resObject["unix"] = new Date().getTime();
+    resObject["utc"] = new Date().toUTCString();
+
+    res.json(resObject);
+});
+
+app.get("/api/timestamp/:date", (req, res) => {
+    let date = req.params.date;
+    if (date.includes('-')) {
+        resObject["unix"] = new Date(date).getTime();
+        resObject["utc"] = new Date(date).toUTCString();
     } else {
         input = parseInt(input);
-        resObject["unix"] = new Date(input).getTime();
-        resObject["utc"] = new Date(input).toUTCString();
+        resObject["unix"] = new Date(date).getTime();
+        resObject["utc"] = new Date(date).toUTCString();
     }
 
     if (!resObject["unix"] || !resObject["utc"]) {
@@ -45,18 +52,10 @@ app.get("/api/timestamp/:input", (req, res) => {
     res.json(resObject);
 });
 
-app.get("/api/timestamp"), (req, res) => {
-    resObject["unix"] = new Date().getTime();
-    resObject["utc"] = new Date().toUTCString();
-
-    res.json(resObject);
-};
-
-
 
 
 
 // listen for requests :)
-var listener = app.listen(3000, function() {
+var listener = app.listen(process.env.PORT, function() {
     console.log('Your app is listening on port ' + listener.address().port);
 });
