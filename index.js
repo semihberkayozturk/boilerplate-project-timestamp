@@ -28,7 +28,7 @@ app.get("/api/hello", function(req, res) {
 
 let resObject = {}
 
-app.get("/api/timestamp", (req, res) => {
+app.get("/api/", (req, res) => {
     resObject["unix"] = new Date().getTime();
     resObject["utc"] = new Date().toUTCString();
 
@@ -41,7 +41,7 @@ app.get("/api/timestamp/:date", (req, res) => {
         resObject["unix"] = new Date(date).getTime();
         resObject["utc"] = new Date(date).toUTCString();
     } else {
-        input = parseInt(input);
+        date = parseInt(date);
         resObject["unix"] = new Date(date).getTime();
         resObject["utc"] = new Date(date).toUTCString();
     }
